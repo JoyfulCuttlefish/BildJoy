@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Page1 from './Page1.js';
+import CreateImage from './CreateImage.js';
 import Page2 from './Page2.js';
 import SeeImages from './SeeImages.js';
 
@@ -19,16 +19,9 @@ const Rooter = () => {
         <>
             <Router>
                 <Routes>
-                    <Route path="/" element={<Page1 />} />
-                    <Route path="/seeimages/*" element={<SeeImages />} />
-                    {images && images.map((image, index) => (
-                        <Route
-                            key={index}
-                            path={`/seeimages/${image.id}`}
-                            element={<Page2 imageId={image.id} />}
-                        />
-                    ))}
-
+                    <Route path="/" element={<CreateImage />} />
+                    <Route path="/seeimages/" element={<SeeImages />} />
+                    <Route path="/seeimages/:id" element={<SeeImages />} />
 
                 </Routes>
 
