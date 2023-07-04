@@ -1,11 +1,11 @@
 package com.filrouge.bild.controller;
 
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.http.MediaType;
-        import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
-        import com.filrouge.bild.model.Shape;
-        import com.filrouge.bild.service.ShapeService;
+import com.filrouge.bild.model.Shape;
+import com.filrouge.bild.service.ShapeService;
 
 
 
@@ -37,7 +37,4 @@ public class ShapeController {
         this.shapeService.deleteShape(id);
     }
 
-
-
 }
-

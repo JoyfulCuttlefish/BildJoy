@@ -7,6 +7,11 @@ const CreateImage = () => {
 
     const stageRef = useRef(null);
     const [shapes, setShapes] = useState([]);
+    const [imageName, setImageName] = useState('');
+
+    useEffect(() => {
+        console.log(shapes);
+    }, [shapes]);
     
     const generateShape = (type) => {
 
@@ -53,16 +58,37 @@ const CreateImage = () => {
                 break;
 
             default:
+                
                 shapeData = null;
 
-                break;
+                break;     
+        }
+    
+        setShapes((oldShapes) => [...oldShapes, shapeData]);
+    };
 
+    //     console.log('Generated shape:', shapeData); // Log shapeData
+    //     setShapes((oldShapes) => {
+    //         return [...oldShapes, shapeData];
+    //     });
+    // };
+
+
+    const handleShapeUpdate = (newData) => {
+
+        let currentShapeIndex = shapes.findIndex((s) => s.id === newData.id);
+
+        if (currentShapeIndex !== -1) {
+            const currentShape = { ...shapes[currentShapeIndex], ...newData };
+
+            setShapes((oldShapes) => {
+                oldShapes[currentShapeIndex] = currentShape;
+                return [...oldShapes];
+            })
         }
 
-        setShapes((oldShapes) => {
-            return [...oldShapes, shapeData];
-        });
     };
+
 
     const getShapeComponent = (shapeData, index) => {
         switch (shapeData.type) {
@@ -84,10 +110,25 @@ const CreateImage = () => {
         const dataURL = stageRef.current.toDataURL();
 
         const requestBody = {
-            name: "My Image",
-            image: dataURL,
-            shapes: shapes,
+            name: imageName,
+            shapesList: shapes.map((shape) => {
+                const { id, type, ...rest } = shape;
+
+              switch (type) {
+                case Shapes.types.CIRCLE:
+                  return { type, ...rest, radius: shape.radius };
+                case Shapes.types.RECTANGLE:
+                  return { type, ...rest, width: shape.width, height: shape.height };
+                case Shapes.types.TRIANGLE:
+                  return { type, ...rest, radius: shape.radius, sides: shape.sides };
+                default:
+                  return null;
+              }
+            })
         };
+          
+        console.log('Shapes array:', shapes); // Log shapes array
+        console.log('ImageName:', imageName);
 
         fetch('http://localhost:8080/images/add', {
             method: 'POST',
@@ -99,8 +140,9 @@ const CreateImage = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log('Success:', data);
-
+                setImageName(imageName);
                 setShapes([...shapes, data]);
+                console.log('Updated shapes array:', shapes); // Log updated shapes array
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -115,9 +157,17 @@ const CreateImage = () => {
                 <Nav />
                 <h1>Welcome * Bienvenue * Wilkommen : Bild 402</h1>
                 <h3>You can drag and drop the shapes to create a picture. Have fun!</h3>
-                <p>There are 5 of each shape.</p>
                 <div>
-                    <button type="button" id="POST" onClick={addImage}>Save image (post)</button>
+
+                <input
+                        type="text"
+                        value={imageName}
+                        onChange={(e) => setImageName(e.target.value)}
+                        placeholder="Image Name"
+                    />
+                    <button type="button" id="POST" onClick={addImage}>
+                        Save Image
+                    </button>
                 </div>
 
             </>
@@ -130,6 +180,8 @@ const CreateImage = () => {
                 <Stage width={900} height={600} ref={stageRef} className='stage'>
                     <Layer>
                     {shapes.map((shapeData, index) => getShapeComponent(shapeData, index))}
+        
+                    <Shapes shapes={shapes} setShapes={handleShapeUpdate}></Shapes>
                     </Layer>
                 </Stage>
 

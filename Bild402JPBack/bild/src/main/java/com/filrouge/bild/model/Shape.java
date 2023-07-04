@@ -1,10 +1,10 @@
 package com.filrouge.bild.model;
 
-        import com.fasterxml.jackson.annotation.JsonSubTypes;
-        import com.fasterxml.jackson.annotation.JsonTypeInfo;
-        import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-        import jakarta.persistence.*;
-        import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import jakarta.persistence.*;
+import lombok.Data;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "type")
 @JsonSubTypes({
@@ -26,6 +26,9 @@ public abstract class Shape {
     @Column(name = "type")
     protected String type;
 
+    @Column(name = "fill")
+    protected String fill;
+
     public Shape() {
         this.x = 0;
         this.y = 0;
@@ -34,30 +37,43 @@ public abstract class Shape {
         this.x = x;
         this.y = y;
     }
+
+    public Shape(int id, String fill, int x, int y) {
+        this.id = id;
+        this.fill = fill;
+        this.x = x;
+        this.y = y;
+    }
+
+
     public int getId() {
         return id;
     }
     public void setId(int id) {
         this.id = id;
     }
-    public int getXPosition() {
+    public int getX() {
         return this.x;
     }
-    public void setXPosition(int x) {
+    public void setX(int x) {
         this.x = x;
     }
-    public int getYPosition() {
+    public int getY() {
         return this.y;
     }
-    public void setYPosition(int y) {
+    public void setY(int y) {
         this.y = y;
     }
 
-    public abstract String toString();
+    public String getFill() {return fill;}
+    public void setFill(String fill) {this.fill = fill;}
 
-    public abstract double calculerPerimeter();
+    @Override
+    public String toString() {
+        return "Shape [id=" + id + ", x=" + x + ", y=" + y + ", fill=" + fill + "]";
+    }
 
-    public abstract double calculerArea();
+
 
     public void display() {
         System.out.println(this.toString());

@@ -1,7 +1,7 @@
 package com.filrouge.bild.model;
 
 
-        import jakarta.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "circle")
@@ -9,7 +9,7 @@ public class Circle extends Shape {
     // attributs
 
     @Column(name="radius")
-    private double radius = 10;
+    private double radius;
 
     // constructors
     public Circle() {
@@ -18,8 +18,8 @@ public class Circle extends Shape {
         this.type = "circle";
     }
 
-    public Circle(int x, int y, double radius) {
-        super(x, y);
+    public Circle(int id, String fill, int x, int y, double radius) {
+        super(id, fill, x, y);
         this.radius = radius;
         this.type = "circle";
     }
@@ -27,24 +27,16 @@ public class Circle extends Shape {
     // methods
     public double getRadius() {return this.radius;}
 
-    public void setRadius(int newRadius) {
-        this.radius = newRadius;
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 
     @Override
     public String toString() {
-        return "Circle: xPosition =" + this.getXPosition() +" " + " yPosition : " + this.getYPosition() + " " + " radius = " + " " +  radius  +"\nArea of circle is : " + calculerArea() + "\nCircumference of circle is : "   + calculerPerimeter();
+        return "Circles have a radius of: " +  radius ;
     }
     public void display(){
         System.out.println(this.toString());
     }
-    @Override
-    public double calculerPerimeter() {
-        return 2 * Math.PI * radius;
-    }
 
-    @Override
-    public double calculerArea() {
-        return Math.PI* radius * radius;
-    }
 }

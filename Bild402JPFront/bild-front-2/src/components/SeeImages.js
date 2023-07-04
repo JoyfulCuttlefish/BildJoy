@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from './Navbar';
-import { BrowserRouter as Router, Routes, Link, Route } from 'react-router-dom';
-import Page2 from './Page2';
+import { Link, Routes, Route } from 'react-router-dom';
+import ImageViewer from './ImageViewer';
 
 function SeeImages() {
 
@@ -13,36 +13,28 @@ function SeeImages() {
       .then(data => setImages(data));
   }, []);
 
+  //each time images changes, useEffect called as function and executes console.log 
+  useEffect(() => {
+    console.log(images)
+  }, [images]);
+
+
   return (
-    
     <div>
-        <Nav />
+      <Nav />
       <nav>
         <ul>
-          {
-            images && images.map((image, index) => (
-                <li key={index}>
-                  <Link to={`/seeimages/${image.id}`} >
-                    Click to see {image.name} that has {image.numberOfShapes} shapes 
-                    </Link>
-                </li>
-              )
-            )
-          }
+          {images.map((image) => (
+            <li key={image.id}>
+              <Link to={`/seeimages/${image.id}`}>
+                Click to see {image.name} that has {image.numberOfShapes} shapes
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
-      <Routes>
-        {
-          images && images.map((image, index) => (
-            <Route
-              key={index}
-              path={`/seeimages/${image.id}`} 
-              render={() => <Page2 imageId={image.id} />}
-            />
-          ))
-        }
-      </Routes>
-  </div>
-);
+    </div>
+  );
 }
+
 export default SeeImages;
