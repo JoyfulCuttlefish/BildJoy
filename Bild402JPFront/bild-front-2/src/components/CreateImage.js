@@ -176,7 +176,7 @@ const CreateImage = () => {
                 <button onClick={() => generateShape('circle')}>Circle</button >
                 <button onClick={() => generateShape('rectangle')}>Rectangle</button>
                 <button onClick={() => generateShape('triangle')}>Triangle</button>
-
+            <div className='stage-container'>
                 <Stage width={900} height={600} ref={stageRef} className='stage'>
                     <Layer>
                     {shapes.map((shapeData, index) => getShapeComponent(shapeData, index))}
@@ -184,7 +184,7 @@ const CreateImage = () => {
                     <Shapes shapes={shapes} setShapes={handleShapeUpdate}></Shapes>
                     </Layer>
                 </Stage>
-
+                </div>
             </div >
             
         </React.Fragment>

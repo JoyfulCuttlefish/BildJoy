@@ -16,3 +16,9 @@ code {
   outline: 2px solid #ccc;
 }
 
+.stage-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
